@@ -98,7 +98,7 @@ export namespace QrFormats {
 	export type Upi = {
 		upi_id: string;
 		name: string;
-		ammount?: number;
+		amount: number;
 		currency?: string;
 		note?: string;
 	};

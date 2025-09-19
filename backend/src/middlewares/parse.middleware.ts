@@ -55,7 +55,12 @@ function keysChecker(ob: Object, QrType: QrF): string | undefined {
 	} else if (QrType == QrF.TEXT_URL) {
 		if (!keys.includes("text_url")) return notFoundMesage(["text_url"]);
 	} else if (QrType == QrF.UPI) {
-		if (!keys.includes("upi_id")) return notFoundMesage(["upi_id"]);
+		if (
+			!keys.includes("upi_id") ||
+			!keys.includes("name") ||
+			!keys.includes("amount")
+		)
+			return notFoundMesage(["upi_id", "name", "amount"]);
 	} else if (QrType == QrF.VCARD) {
 		if (!keys.includes("firstName")) return notFoundMesage(["firstName"]);
 	} else if (QrType == QrF.WIFI) {
@@ -94,7 +99,7 @@ export const parseBody = async (
 	try {
 		const { type } = req.params;
 		const QrType = type ? typemap(type) : QrFormat.TEXT_URL;
-		console.log(QrType)
+		console.log(QrType);
 		const err = keysChecker(req.body, QrType);
 		if (err) return res.status(404).json({ msg: err });
 

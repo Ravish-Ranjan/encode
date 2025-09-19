@@ -101,11 +101,12 @@ function formatQrData(qrData: QrData): string {
 			const UpiData = data as QrFormats.Upi;
 			const name = encodeURIComponent(UpiData.name);
 			const note = UpiData.note ? encodeURIComponent(UpiData.note) : "";
-			return `upi://pay?pa=${UpiData.upi_id}&pn=${name}` + UpiData.ammount
-				? `&am=${UpiData.ammount}`
-				: "" + `&cu=${UpiData.currency || "INR"}` + UpiData.note
-				? `&tn=${note}`
-				: "";
+			return (
+				`upi://pay?pa=${UpiData.upi_id}&pn=${name}` +
+				(UpiData.amount ? `&am=${UpiData.amount}` : "") +
+				`&cu=${UpiData.currency || "INR"}` +
+				(UpiData.note ? `&tn=${note}` : "")
+			);
 		}
 		case QrFormat.VCARD: {
 			const VcardData = data as QrFormats.VCard;
@@ -155,7 +156,6 @@ export const createQr = async (req: QrRequest, res: Response) => {
 			return res.status(404).json({ msg: "no data to create qrcode" });
 		}
 		const strData = formatQrData(qrData);
-
 		await qr.toFileStream(res, strData);
 	} catch (error) {
 		console.log("Error :", error);
