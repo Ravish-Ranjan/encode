@@ -1,3 +1,23 @@
+import type { Response } from "express";
+import qr from "qrcode";
+import type { QrData, QrRequest, QrFormats } from "../../types";
+import { QrFormat } from "../../types";
+
+function toBasicISO(date: Date) {
+	const pad = (n: number) => n.toString().padStart(2, "0");
+
+	return (
+		date.getUTCFullYear().toString() +
+		pad(date.getUTCMonth() + 1) +
+		pad(date.getUTCDate()) +
+		"T" +
+		pad(date.getUTCHours()) +
+		pad(date.getUTCMinutes()) +
+		pad(date.getUTCSeconds()) +
+		"Z"
+	);
+}
+
 function formatQrData(qrData: QrData): string {
 	const { type, data } = qrData;
 
@@ -27,6 +47,24 @@ function formatQrData(qrData: QrData): string {
 		}
 		case QrFormat.EVENT: {
 			const EventData = data as QrFormats.Event;
+			const form: string[] = [
+				"BEGIN:VEVENT",
+				`SUMMARY:${EventData.summary}`,
+				`DTSTART:${
+					EventData.dateStart
+						? toBasicISO(new Date(EventData.dateStart))
+						: ""
+				}`,
+				`DTEND:${
+					EventData.dateEnd
+						? toBasicISO(new Date(EventData.dateEnd))
+						: ""
+				}`,
+				`LOCATION:${EventData.location || ""}`,
+				`DESCRIPTION:${EventData.description || ""}`,
+				"END:VEVENT",
+			];
+			return encodeURIComponent(form.join("\n"));
 		}
 		case QrFormat.GEO_LOCATION: {
 			const GeoLocationData = data as QrFormats.GeoLocation;
@@ -63,7 +101,7 @@ function formatQrData(qrData: QrData): string {
 			const UpiData = data as QrFormats.Upi;
 			const name = encodeURIComponent(UpiData.name);
 			const note = UpiData.note ? encodeURIComponent(UpiData.note) : "";
-			return `upi://pay?pa=${UpiData.upiId}&pn=${name}` + UpiData.ammount
+			return `upi://pay?pa=${UpiData.upi_id}&pn=${name}` + UpiData.ammount
 				? `&am=${UpiData.ammount}`
 				: "" + `&cu=${UpiData.currency || "INR"}` + UpiData.note
 				? `&tn=${note}`
@@ -71,6 +109,25 @@ function formatQrData(qrData: QrData): string {
 		}
 		case QrFormat.VCARD: {
 			const VcardData = data as QrFormats.VCard;
+			const form: string[] = [
+				"BEGIN:VCARD;",
+				"VERSION:3.0;",
+				`N:${VcardData.firstName || ""};${VcardData.lastName || ""};;;`,
+				`FN:${
+					(VcardData.firstName || "") +
+					" " +
+					(VcardData.lastName || "")
+				}`,
+				`ORG:${VcardData.orgName || ""}`,
+				`TITLE:${VcardData.title || ""}`,
+				`TEL;TYPE=cell:${VcardData.telephoneCell || ""}`,
+				`TEL;TYPE=work:${VcardData.telephoneWork || ""}`,
+				`EMAIL:${VcardData.email || ""}`,
+				`URL:${VcardData.url || ""}`,
+				`ADR:${VcardData.address || ""}`,
+				"END:VCARD",
+			];
+			return form.join("\n");
 		}
 		case QrFormat.WIFI: {
 			const WifiData = data as QrFormats.Wifi;
@@ -88,3 +145,20 @@ function formatQrData(qrData: QrData): string {
 	}
 }
 
+export const createQr = async (req: QrRequest, res: Response) => {
+	try {
+		const qrData = req.qrData;
+
+		res.setHeader("Content-Type", "image/png");
+
+		if (!qrData) {
+			return res.status(404).json({ msg: "no data to create qrcode" });
+		}
+		const strData = formatQrData(qrData);
+
+		await qr.toFileStream(res, strData);
+	} catch (error) {
+		console.log("Error :", error);
+		return res.status(500).json({ msg: "error creating qrcode" });
+	}
+};

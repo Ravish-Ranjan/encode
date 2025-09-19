@@ -1,4 +1,6 @@
-declare enum QrFormat {
+import type { Request } from "express";
+
+export enum QrFormat {
 	TEXT_URL = "text_url",
 	VCARD = "vcard",
 	MECARD = "mecard",
@@ -12,7 +14,7 @@ declare enum QrFormat {
 	UPI = "upi",
 }
 
-type QrFormatMap = {
+export type QrFormatMap = {
 	[QrFormat.BITCOIN]: QrFormats.BitCoin;
 	[QrFormat.EMAIL]: QrFormats.Email;
 	[QrFormat.EVENT]: QrFormats.Event;
@@ -26,12 +28,12 @@ type QrFormatMap = {
 	[QrFormat.WIFI]: QrFormats.Wifi;
 };
 
-declare namespace QrFormats {
-	type TextUrl = {
+export namespace QrFormats {
+	export type TextUrl = {
 		text_url: string;
 	};
 
-	type VCard = {
+	export type VCard = {
 		firstName: string;
 		lastName?: string;
 		orgName?: string;
@@ -43,7 +45,7 @@ declare namespace QrFormats {
 		address?: string;
 	};
 
-	type MeCard = {
+	export type MeCard = {
 		name: string;
 		telephone?: string;
 		email?: string;
@@ -51,34 +53,34 @@ declare namespace QrFormats {
 		url?: string;
 	};
 
-	type Wifi = {
+	export type Wifi = {
 		type: "WPA" | "WEP" | "nopass";
 		ssid: string;
 		password?: string;
 	};
 
-	type Email = {
+	export type Email = {
 		email: string;
 		subject?: string;
 		body?: string;
 	};
 
-	type Sms = {
+	export type Sms = {
 		to: string;
 		message?: string;
 	};
 
-	type Telephone = {
+	export type Telephone = {
 		telephone: string;
 	};
 
-	type GeoLocation = {
+	export type GeoLocation = {
 		latitude: number;
 		longitude: number;
 		label?: string;
 	};
 
-	type Event = {
+	export type Event = {
 		summary: string;
 		dateStart?: string;
 		dateEnd?: string;
@@ -86,15 +88,15 @@ declare namespace QrFormats {
 		description?: string;
 	};
 
-	type BitCoin = {
+	export type BitCoin = {
 		address: string;
 		amount?: number;
 		label?: string;
 		message?: string;
 	};
 
-	type Upi = {
-		upiId: string;
+	export type Upi = {
+		upi_id: string;
 		name: string;
 		ammount?: number;
 		currency?: string;
@@ -102,19 +104,13 @@ declare namespace QrFormats {
 	};
 }
 
-type QrData = {
+export type QrData = {
 	[k in keyof QrFormatMap]: {
 		type: k;
-		data: QrFormats[k];
+		data: QrFormatMap[k];
 	};
 }[keyof QrFormatMap];
 
-declare namespace QrExpress {
-	type Request = import("express").Request;
-	type Response = import("express").Response;
-	type NextFunction = import("express").NextFunction;
-
-	interface QrRequest extends Request {
-		qrData?: QrData;
-	}
+export interface QrRequest extends Request {
+	qrData?: QrData;
 }

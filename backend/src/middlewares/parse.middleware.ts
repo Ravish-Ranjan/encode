@@ -1,20 +1,85 @@
+import { QrFormat as QrF, QrRequest, QrFormatMap, QrData } from "../../types";
+import { QrFormat } from "../../types";
+import type { Response, NextFunction } from "express";
+
+function typemap(type: string): QrF {
+	switch (type) {
+		case "text_url":
+			return QrFormat.TEXT_URL;
+		case "vcard":
+			return QrFormat.VCARD;
+		case "mecard":
+			return QrFormat.MECARD;
+		case "wifi":
+			return QrFormat.WIFI;
+		case "email":
+			return QrFormat.EMAIL;
+		case "sms":
+			return QrFormat.SMS;
+		case "telephone":
+			return QrFormat.TELEPHONE;
+		case "geo_location":
+			return QrFormat.GEO_LOCATION;
+		case "calendar_event":
+			return QrFormat.EVENT;
+		case "bitcoin":
+			return QrFormat.BITCOIN;
+		case "upi":
+			return QrFormat.UPI;
+		default:
+			return QrFormat.TEXT_URL;
+	}
+}
+
+function notFoundMesage(fields: string[]): string {
+	return `Required files are not given (${fields.join(",")})`;
+}
+
+function keysChecker(ob: Object, QrType: QrF): string | undefined {
+	const keys = Object.keys(ob);
+	if (QrType === QrF.BITCOIN) {
+		if (!keys.includes("address")) return notFoundMesage(["address"]);
+	} else if (QrType === QrF.EMAIL) {
+		if (!keys.includes("email")) return notFoundMesage(["email"]);
+	} else if (QrType === QrF.EVENT) {
+		if (!keys.includes("summary")) return notFoundMesage(["summary"]);
+	} else if (QrType === QrF.GEO_LOCATION) {
+		if (!keys.includes("latitude") || !keys.includes("longitude"))
+			return notFoundMesage(["latitude", "longitude"]);
+	} else if (QrType == QrF.MECARD) {
+		if (!keys.includes("name")) return notFoundMesage(["name"]);
+	} else if (QrType == QrF.SMS) {
+		if (!keys.includes("to")) return notFoundMesage(["to"]);
+	} else if (QrType == QrF.TELEPHONE) {
+		if (!keys.includes("telephone")) return notFoundMesage(["telephone"]);
+	} else if (QrType == QrF.TEXT_URL) {
+		if (!keys.includes("text_url")) return notFoundMesage(["text_url"]);
+	} else if (QrType == QrF.UPI) {
+		if (!keys.includes("upi_id")) return notFoundMesage(["upi_id"]);
+	} else if (QrType == QrF.VCARD) {
+		if (!keys.includes("firstName")) return notFoundMesage(["firstName"]);
+	} else if (QrType == QrF.WIFI) {
+		if (!keys.includes("type") || !keys.includes("ssid"))
+			return notFoundMesage(["type", "ssid"]);
+	}
+}
+
 export const parseParam = async (
-	req: QrExpress.QrRequest,
-	res: QrExpress.Response,
-	next: QrExpress.NextFunction
+	req: QrRequest,
+	res: Response,
+	next: NextFunction
 ) => {
 	try {
-		const { type: rawType } = req.params;
-		const type: QrFormat = Object.values(QrFormat).includes(
-			rawType as QrFormat
-		)
-			? (rawType as QrFormat)
-			: QrFormat.TEXT_URL;
+		const { type } = req.params;
+		const QrType = type ? typemap(type) : QrFormat.TEXT_URL;
+		const err = keysChecker(req.query, QrType);
+		if (err) return res.status(404).json({ msg: err });
 
 		req.qrData = {
-			type,
-			data: req.query as QrFormatMap[typeof type],
-		};
+			type: QrType,
+			data: req.query as QrFormatMap[QrF],
+		} as QrData;
+		next();
 	} catch (error) {
 		console.log("error", error);
 		return res.status(500).json({ msg: error });
@@ -22,22 +87,21 @@ export const parseParam = async (
 };
 
 export const parseBody = async (
-	req: QrExpress.QrRequest,
-	res: QrExpress.Response,
-	next: QrExpress.NextFunction
+	req: QrRequest,
+	res: Response,
+	next: NextFunction
 ) => {
 	try {
-		const { type: rawType } = req.params;
-		const type: QrFormat = Object.values(QrFormat).includes(
-			rawType as QrFormat
-		)
-			? (rawType as QrFormat)
-			: QrFormat.TEXT_URL;
+		const { type } = req.params;
+		const QrType = type ? typemap(type) : QrFormat.TEXT_URL;
+		console.log(QrType)
+		const err = keysChecker(req.body, QrType);
+		if (err) return res.status(404).json({ msg: err });
 
 		req.qrData = {
-			type,
-			data: req.body as QrFormatMap[typeof type],
-		};
+			type: QrType,
+			data: req.body as QrFormatMap[QrF],
+		} as QrData;
 		next();
 	} catch (error) {
 		console.log("error", error);
