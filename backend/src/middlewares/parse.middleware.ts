@@ -57,10 +57,9 @@ function keysChecker(ob: Object, QrType: QrF): string | undefined {
 	} else if (QrType == QrF.UPI) {
 		if (
 			!keys.includes("upi_id") ||
-			!keys.includes("name") ||
 			!keys.includes("amount")
 		)
-			return notFoundMesage(["upi_id", "name", "amount"]);
+			return notFoundMesage(["upi_id", "amount"]);
 	} else if (QrType == QrF.VCARD) {
 		if (!keys.includes("firstName")) return notFoundMesage(["firstName"]);
 	} else if (QrType == QrF.WIFI) {
