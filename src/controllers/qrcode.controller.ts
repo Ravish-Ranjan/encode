@@ -150,7 +150,7 @@ export const createQr = async (req: QrRequest, res: Response) => {
 	try {
 		const qrData = req.qrData;
 		const colours = req.qrData?.colours;
-
+		console.log("came for creation")
 		res.setHeader("Content-Type", "image/png");
 
 		if (!qrData) {

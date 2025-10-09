@@ -3,11 +3,13 @@ import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
 import { config } from "dotenv";
+import { createClient } from "redis";
 import paramRouter from "./routers/qrParam.router";
 import bodyRouter from "./routers/qrBody.router";
 
 config();
 
+const redisClient = createClient();
 const app = express();
 
 app.use(
@@ -33,6 +35,15 @@ app.use("/api", bodyRouter);
 
 const port = process.env.PORT || 8001;
 
+redisClient
+	.connect()
+	.then(() => {
+		console.log("SERVER : Redis connection successfull");
+	})
+	.catch((_error) =>
+		console.log("SERVER (ERROR) : error connecting to redis server")
+	);
+
 const server = app.listen(port, () => {
 	console.log(`SERVER : running on port ${port}`);
 });
@@ -41,3 +52,5 @@ process.on("SIGTERM", () => {
 	console.log("SERVER : SIGTERM recieved, closing server");
 	server.close();
 });
+
+export { redisClient };
