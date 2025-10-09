@@ -6,10 +6,13 @@ import { config } from "dotenv";
 import { createClient } from "redis";
 import paramRouter from "./routers/qrParam.router";
 import bodyRouter from "./routers/qrBody.router";
+import type { Server } from "http";
 
 config();
 
-const redisClient = createClient();
+const redisClient = createClient({
+	url: process.env.REDIS_URL || "redis://localhost:6379",
+});
 const app = express();
 
 app.use(
@@ -34,23 +37,24 @@ app.use("/api", paramRouter);
 app.use("/api", bodyRouter);
 
 const port = process.env.PORT || 8001;
+let server: Server | undefined;
 
 redisClient
 	.connect()
 	.then(() => {
 		console.log("SERVER : Redis connection successfull");
+		server = app.listen(port, () => {
+			console.log(`SERVER : running on port ${port}`);
+		});
 	})
-	.catch((_error) =>
-		console.log("SERVER (ERROR) : error connecting to redis server")
-	);
-
-const server = app.listen(port, () => {
-	console.log(`SERVER : running on port ${port}`);
-});
+	.catch((_error) => {
+		console.log("SERVER (ERROR) : error connecting to redis server");
+		if (server) server.close();
+	});
 
 process.on("SIGTERM", () => {
 	console.log("SERVER : SIGTERM recieved, closing server");
-	server.close();
+	if (server) server.close();
 });
 
 export { redisClient };

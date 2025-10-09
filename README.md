@@ -81,7 +81,9 @@ npm start
 ### Configuration
 Environment variables can be set in a .env file:
 >
-    PORT=8000
+    PORT=<PORT>
+    REDIS_URL=redis://localhost:6379
+
 
 ### Author:
 [Ravish Ranjan](https://github.com/Ravish-Ranjan)
