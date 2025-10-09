@@ -108,6 +108,10 @@ export type QrData = {
 	[k in keyof QrFormatMap]: {
 		type: k;
 		data: QrFormatMap[k];
+		colours?: {
+			fg?: string;
+			bg?: string;
+		};
 	};
 }[keyof QrFormatMap];
 

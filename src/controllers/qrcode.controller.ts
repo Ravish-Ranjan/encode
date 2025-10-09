@@ -149,6 +149,7 @@ function formatQrData(qrData: QrData): string {
 export const createQr = async (req: QrRequest, res: Response) => {
 	try {
 		const qrData = req.qrData;
+		const colours = req.qrData?.colours;
 
 		res.setHeader("Content-Type", "image/png");
 
@@ -156,7 +157,13 @@ export const createQr = async (req: QrRequest, res: Response) => {
 			return res.status(404).json({ msg: "no data to create qrcode" });
 		}
 		const strData = formatQrData(qrData);
-		await qr.toFileStream(res, strData,{width:400});
+		await qr.toFileStream(res, strData, {
+			width: 400,
+			color: {
+				light: colours?.bg ?? "#ffffff",
+				dark: colours?.fg ?? "#000000",
+			},
+		});
 	} catch (error) {
 		console.log("Error :", error);
 		return res.status(500).json({ msg: "error creating qrcode" });

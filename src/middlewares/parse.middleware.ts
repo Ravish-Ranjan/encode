@@ -55,10 +55,7 @@ function keysChecker(ob: Object, QrType: QrF): string | undefined {
 	} else if (QrType == QrF.TEXT_URL) {
 		if (!keys.includes("text_url")) return notFoundMesage(["text_url"]);
 	} else if (QrType == QrF.UPI) {
-		if (
-			!keys.includes("upi_id") ||
-			!keys.includes("amount")
-		)
+		if (!keys.includes("upi_id") || !keys.includes("amount"))
 			return notFoundMesage(["upi_id", "amount"]);
 	} else if (QrType == QrF.VCARD) {
 		if (!keys.includes("firstName")) return notFoundMesage(["firstName"]);
@@ -66,6 +63,10 @@ function keysChecker(ob: Object, QrType: QrF): string | undefined {
 		if (!keys.includes("type") || !keys.includes("ssid"))
 			return notFoundMesage(["type", "ssid"]);
 	}
+}
+
+function isHexColor(str: string) {
+	return /^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/.test(str);
 }
 
 export const parseParam = async (
@@ -76,12 +77,27 @@ export const parseParam = async (
 	try {
 		const { type } = req.params;
 		const QrType = type ? typemap(type) : QrFormat.TEXT_URL;
+		const { fg, bg } = req.query;
 		const err = keysChecker(req.query, QrType);
 		if (err) return res.status(404).json({ msg: err });
+
+		const qrColours: {
+			fg?: string;
+			bg?: string;
+		} = {};
+
+		if (typeof fg === "string" && isHexColor(fg.trim())) {
+			qrColours.fg = fg.trim();
+		}
+
+		if (typeof bg === "string" && isHexColor(bg.trim())) {
+			qrColours.bg = bg.trim();
+		}
 
 		req.qrData = {
 			type: QrType,
 			data: req.query as QrFormatMap[QrF],
+			colours: qrColours,
 		} as QrData;
 		next();
 	} catch (error) {
@@ -98,13 +114,27 @@ export const parseBody = async (
 	try {
 		const { type } = req.params;
 		const QrType = type ? typemap(type) : QrFormat.TEXT_URL;
-		console.log(QrType);
+		const { fg, bg } = req.body;
 		const err = keysChecker(req.body, QrType);
 		if (err) return res.status(404).json({ msg: err });
+
+		const qrColours: {
+			fg?: string;
+			bg?: string;
+		} = {};
+
+		if (typeof fg === "string" && isHexColor(fg.trim())) {
+			qrColours.fg = fg.trim();
+		}
+
+		if (typeof bg === "string" && isHexColor(bg.trim())) {
+			qrColours.bg = bg.trim();
+		}
 
 		req.qrData = {
 			type: QrType,
 			data: req.body as QrFormatMap[QrF],
+			colours: qrColours,
 		} as QrData;
 		next();
 	} catch (error) {
