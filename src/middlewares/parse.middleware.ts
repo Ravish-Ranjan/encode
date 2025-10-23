@@ -1,5 +1,5 @@
-import { QrFormat as QrF, QrRequest, QrFormatMap, QrData } from "../../types";
-import { QrFormat } from "../../types";
+import { QrFormat as QrF, QrRequest, QrFormatMap, QrData } from "../types";
+import { QrFormat } from "../types";
 import type { Response, NextFunction } from "express";
 
 function typemap(type: string): QrF {

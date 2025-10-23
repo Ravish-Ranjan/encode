@@ -1,7 +1,7 @@
 import type { Response } from "express";
 import qr from "qrcode";
-import type { QrData, QrRequest, QrFormats } from "../../types";
-import { QrFormat } from "../../types";
+import type { QrData, QrRequest, QrFormats } from "../types";
+import { QrFormat } from "../types";
 
 function toBasicISO(date: Date) {
 	const pad = (n: number) => n.toString().padStart(2, "0");
@@ -150,7 +150,7 @@ export const createQr = async (req: QrRequest, res: Response) => {
 	try {
 		const qrData = req.qrData;
 		const colours = req.qrData?.colours;
-		console.log("came for creation")
+		console.log("came for creation");
 		res.setHeader("Content-Type", "image/png");
 
 		if (!qrData) {

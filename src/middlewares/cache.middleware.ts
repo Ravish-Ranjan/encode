@@ -1,12 +1,8 @@
 import type { NextFunction, Response } from "express";
-import type { QrRequest } from "../../types";
+import type { QrRequest } from "../types";
 import { redisClient } from "../index";
 
-export async function cache(
-	req: QrRequest,
-	res: Response,
-	next: NextFunction
-) {
+export async function cache(req: QrRequest, res: Response, next: NextFunction) {
 	if (!req.qrData) return next();
 
 	const { type, data, colours } = req.qrData;
@@ -42,7 +38,7 @@ export async function cache(
 			) {
 				await redisClient.set(cacheKey, buffer.toString("base64"), {
 					EX: 3600,
-				}); 
+				});
 			}
 			return originalEnd(chunk, ...args);
 		}) as any;
