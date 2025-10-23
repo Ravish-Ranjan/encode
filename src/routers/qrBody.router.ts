@@ -5,7 +5,12 @@ import { cache } from "../middlewares/cache.middleware";
 
 const router = Router();
 
-router.post("/create", parseBody, cache, createQr);
-router.post("/create/:type", parseBody, cache, createQr);
+if (process.env.REDIS_URL) {
+	router.post("/create", parseBody, cache, createQr);
+	router.post("/create/:type", parseBody, cache, createQr);
+} else {
+	router.post("/create", parseBody, createQr);
+	router.post("/create/:type", parseBody, createQr);
+}
 
 export default router;

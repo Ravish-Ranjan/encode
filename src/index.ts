@@ -39,18 +39,25 @@ app.use("/api", bodyRouter);
 const port = process.env.PORT || 8001;
 let server: Server | undefined;
 
-redisClient
-	.connect()
-	.then(() => {
-		console.log("SERVER : Redis connection successfull");
-		server = app.listen(port, () => {
-			console.log(`SERVER : running on port ${port}`);
+if (process.env.REDIS_URL) {
+	redisClient
+		.connect()
+		.then(() => {
+			console.log("SERVER : Redis connection successfull");
+			server = app.listen(port, () => {
+				console.log(`SERVER : running on port ${port}`);
+			});
+		})
+		.catch((_error) => {
+			console.log("SERVER (ERROR) : error connecting to redis server");
+			if (server) server.close();
+			process.exit();
 		});
-	})
-	.catch((_error) => {
-		console.log("SERVER (ERROR) : error connecting to redis server");
-		if (server) server.close();
+} else {
+	server = app.listen(port, () => {
+		console.log(`SERVER : running on port ${port} without redis cache`);
 	});
+}
 
 process.on("SIGTERM", () => {
 	console.log("SERVER : SIGTERM recieved, closing server");
