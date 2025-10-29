@@ -7,6 +7,7 @@ import { createClient } from "redis";
 import paramRouter from "./routers/qrParam.router";
 import bodyRouter from "./routers/qrBody.router";
 import type { Server } from "http";
+import path from "path";
 
 config();
 
@@ -32,6 +33,11 @@ app.use(
 		crossOriginResourcePolicy: false,
 	})
 );
+
+app.use(express.static(path.join(__dirname, "../public")));
+app.get("{*splat}", (req, res) => {
+	res.sendFile(path.join(__dirname, "../public/index.html"));
+});
 
 app.use("/api", paramRouter);
 app.use("/api", bodyRouter);
