@@ -13,7 +13,6 @@ export async function cache(req: QrRequest, res: Response, next: NextFunction) {
 	try {
 		const cachedImage = await redisClient.get(cacheKey);
 		if (cachedImage) {
-			console.log("REDIS : Cache hit");
 
 			const buffer = Buffer.from(cachedImage, "base64");
 			res.setHeader("Content-Type", "image/png");

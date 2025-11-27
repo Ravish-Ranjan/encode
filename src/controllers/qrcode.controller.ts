@@ -150,8 +150,10 @@ export const createQr = async (req: QrRequest, res: Response) => {
 	try {
 		const qrData = req.qrData;
 		const colours = req.qrData?.colours;
-		console.log("came for creation");
 		res.setHeader("Content-Type", "image/png");
+		res.setHeader("Access-Control-Allow-Origin","*"); 
+		res.setHeader("Access-Control-Allow-Methods","GET, POST, OPTIONS"); 
+		res.setHeader("Access-Control-Allow-Headers","Content-Type"); 
 
 		if (!qrData) {
 			return res.status(404).json({ msg: "no data to create qrcode" });
