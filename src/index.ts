@@ -21,7 +21,7 @@ app.use(
 		origin: "*",
 		methods: ["GET", "POST"],
 		credentials: true,
-	})
+	}),
 );
 app.use(express.json());
 app.use(morgan("dev"));
@@ -31,7 +31,22 @@ app.use(
 		noSniff: true,
 		xssFilter: true,
 		crossOriginResourcePolicy: false,
-	})
+		contentSecurityPolicy: {
+			directives: {
+				defaultSrc: ["'self'"],
+				scriptSrc: ["'self'", "'unsafe-inline'", "cdn.tailwindcss.com"],
+				styleSrc: [
+					"'self'",
+					"'unsafe-inline'",
+					"cdn.tailwindcss.com",
+					"fonts.googleapis.com",
+				],
+				fontSrc: ["'self'", "fonts.gstatic.com"],
+				imgSrc: ["'self'", "data:", "https:"],
+				connectSrc: ["'self'", "https:"],
+			},
+		},
+	}),
 );
 
 app.use(express.static(path.join(__dirname, "../public")));

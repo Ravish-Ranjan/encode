@@ -31,37 +31,82 @@ function typemap(type: string): QrF {
 	}
 }
 
-function notFoundMesage(fields: string[]): string {
-	return `Required files are not given (${fields.join(",")})`;
+function notFoundMesage(
+	required_fields: string[],
+	optional_fields?: string[],
+): string {
+	return (
+		`Required files are not given (${required_fields.join(",")})` +
+		(optional_fields ? `\n,optional (${optional_fields?.join(",")})` : "")
+	);
 }
 
 function keysChecker(ob: Object, QrType: QrF): string | undefined {
 	const keys = Object.keys(ob);
 	if (QrType === QrF.BITCOIN) {
-		if (!keys.includes("address")) return notFoundMesage(["address"]);
+		if (!keys.includes("address")) {
+			return notFoundMesage(["address"], ["amount", "label", "message"]);
+		}
 	} else if (QrType === QrF.EMAIL) {
-		if (!keys.includes("email")) return notFoundMesage(["email"]);
+		if (!keys.includes("email")) {
+			return notFoundMesage(["email"], ["subject", "body"]);
+		}
 	} else if (QrType === QrF.EVENT) {
-		if (!keys.includes("summary")) return notFoundMesage(["summary"]);
+		if (!keys.includes("summary")) {
+			return notFoundMesage(
+				["summary"],
+				["dateStart", "dateEnd", "location", "description"],
+			);
+		}
 	} else if (QrType === QrF.GEO_LOCATION) {
-		if (!keys.includes("latitude") || !keys.includes("longitude"))
-			return notFoundMesage(["latitude", "longitude"]);
+		if (!keys.includes("latitude") || !keys.includes("longitude")) {
+			return notFoundMesage(["latitude", "longitude"], ["label"]);
+		}
 	} else if (QrType == QrF.MECARD) {
-		if (!keys.includes("name")) return notFoundMesage(["name"]);
+		if (!keys.includes("name"))
+			return notFoundMesage(
+				["name"],
+				["telephone", "email", "address", "url"],
+			);
 	} else if (QrType == QrF.SMS) {
-		if (!keys.includes("to")) return notFoundMesage(["to"]);
+		if (!keys.includes("to")) {
+			return notFoundMesage(["to"], ["message"]);
+		}
 	} else if (QrType == QrF.TELEPHONE) {
-		if (!keys.includes("telephone")) return notFoundMesage(["telephone"]);
+		if (!keys.includes("telephone")) {
+			return notFoundMesage(["telephone"]);
+		}
 	} else if (QrType == QrF.TEXT_URL) {
-		if (!keys.includes("text_url")) return notFoundMesage(["text_url"]);
+		if (!keys.includes("text_url")) {
+			return notFoundMesage(["text_url"]);
+		}
 	} else if (QrType == QrF.UPI) {
-		if (!keys.includes("upi_id") || !keys.includes("amount"))
-			return notFoundMesage(["upi_id", "amount"]);
+		if (!keys.includes("upi_id") || !keys.includes("amount")) {
+			return notFoundMesage(
+				["upi_id", "amount"],
+				["name", "currency", "note"],
+			);
+		}
 	} else if (QrType == QrF.VCARD) {
-		if (!keys.includes("firstName")) return notFoundMesage(["firstName"]);
+		if (!keys.includes("firstName")) {
+			return notFoundMesage(
+				["firstName"],
+				[
+					"lastName",
+					"orgName",
+					"title",
+					"telephoneCell",
+					"telephoneWork",
+					"email",
+					"url",
+					"address",
+				],
+			);
+		}
 	} else if (QrType == QrF.WIFI) {
-		if (!keys.includes("type") || !keys.includes("ssid"))
-			return notFoundMesage(["type", "ssid"]);
+		if (!keys.includes("type") || !keys.includes("ssid")) {
+			return notFoundMesage(["type", "ssid"], ["password"]);
+		}
 	}
 }
 
@@ -72,11 +117,13 @@ function isHexColor(str: string) {
 export const parseParam = async (
 	req: QrRequest,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const { type } = req.params;
-		const QrType = type ? typemap(type) : QrFormat.TEXT_URL;
+		const QrType = typemap(
+			typeof req.params.type === "string" ? req.params.type : "",
+		);
 		const { fg, bg } = req.query;
 		const err = keysChecker(req.query, QrType);
 		if (err) return res.status(404).json({ msg: err });
@@ -109,11 +156,13 @@ export const parseParam = async (
 export const parseBody = async (
 	req: QrRequest,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const { type } = req.params;
-		const QrType = type ? typemap(type) : QrFormat.TEXT_URL;
+		const QrType = typemap(
+			typeof req.params.type === "string" ? req.params.type : "",
+		);
 		const { fg, bg } = req.body;
 		const err = keysChecker(req.body, QrType);
 		if (err) return res.status(404).json({ msg: err });
