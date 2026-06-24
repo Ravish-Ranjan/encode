@@ -10,10 +10,16 @@ You can embed generated QR codes directly in your web pages:
 
 ```html
 <!-- Example: vCard QR code -->
-<img src="https://encode-9qc6.onrender.com/api/create/vcard?firstName=John&lastName=Doe&email=john@example.com" alt="vCard QR" />
+<img
+	src="https://encode.ravishdev.org/api/create/vcard?firstName=John&lastName=Doe&email=john@example.com"
+	alt="vCard QR"
+/>
 
 <!-- Example: Text/URL QR code with custom colors -->
-<img src="https://encode-9qc6.onrender.com/api/create/text_url?text_url=Hello%20World&fg=%23000000&bg=%23ffffff" alt="Text QR" />
+<img
+	src="https://encode.ravishdev.org/api/create/text_url?text_url=Hello%20World&fg=%23000000&bg=%23ffffff"
+	alt="Text QR"
+/>
 ```
 
 ---
@@ -23,13 +29,13 @@ You can embed generated QR codes directly in your web pages:
 ### GET (Query Parameters)
 
 ```sh
-curl "https://encode-9qc6.onrender.com/api/create/text_url?text_url=Hello%20World"
+curl "https://encode.ravishdev.org/api/create/text_url?text_url=Hello%20World"
 ```
 
 ### POST (JSON Body)
 
 ```sh
-curl -X POST "https://encode-9qc6.onrender.com/api/create/wifi" \
+curl -X POST "https://encode.ravishdev.org/api/create/wifi" \
   -H "Content-Type: application/json" \
   -d '{"type":"WPA","ssid":"MyNetwork","password":"mypassword"}'
 ```
@@ -41,23 +47,29 @@ curl -X POST "https://encode-9qc6.onrender.com/api/create/wifi" \
 ### JavaScript (Node.js, GET)
 
 ```js
-const fetch = require('node-fetch');
-fetch('https://encode-9qc6.onrender.com/api/create/text_url?text_url=Hello%20World')
-  .then(res => res.arrayBuffer())
-  .then(buf => require('fs').writeFileSync('qr.png', Buffer.from(buf)));
+const fetch = require("node-fetch");
+fetch("https://encode.ravishdev.org/api/create/text_url?text_url=Hello%20World")
+	.then((res) => res.arrayBuffer())
+	.then((buf) => require("fs").writeFileSync("qr.png", Buffer.from(buf)));
 ```
 
 ### JavaScript (Node.js, POST)
 
 ```js
-const fetch = require('node-fetch');
-fetch('https://encode-9qc6.onrender.com/api/create/wifi', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ type: 'WPA', ssid: 'MyNetwork', password: 'mypassword' })
+const fetch = require("node-fetch");
+fetch("https://encode.ravishdev.org/api/create/wifi", {
+	method: "POST",
+	headers: { "Content-Type": "application/json" },
+	body: JSON.stringify({
+		type: "WPA",
+		ssid: "MyNetwork",
+		password: "mypassword",
+	}),
 })
-  .then(res => res.arrayBuffer())
-  .then(buf => require('fs').writeFileSync('wifi-qr.png', Buffer.from(buf)));
+	.then((res) => res.arrayBuffer())
+	.then((buf) =>
+		require("fs").writeFileSync("wifi-qr.png", Buffer.from(buf)),
+	);
 ```
 
 ---
@@ -66,7 +78,7 @@ fetch('https://encode-9qc6.onrender.com/api/create/wifi', {
 
 ```python
 import requests
-response = requests.get('https://encode-9qc6.onrender.com/api/create/text_url', params={'text_url': 'Hello World'})
+response = requests.get('https://encode.ravishdev.org/api/create/text_url', params={'text_url': 'Hello World'})
 with open('qr.png', 'wb') as f:
     f.write(response.content)
 ```
@@ -76,7 +88,7 @@ with open('qr.png', 'wb') as f:
 ```python
 import requests
 data = {"type": "WPA", "ssid": "MyNetwork", "password": "mypassword"}
-response = requests.post('https://encode-9qc6.onrender.com/api/create/wifi', json=data)
+response = requests.post('https://encode.ravishdev.org/api/create/wifi', json=data)
 with open('wifi-qr.png', 'wb') as f:
     f.write(response.content)
 ```
@@ -90,7 +102,7 @@ import java.io.*;
 import java.net.*;
 public class QRGet {
     public static void main(String[] args) throws Exception {
-        URL url = new URL("https://encode-9qc6.onrender.com/api/create/text_url?text_url=Hello%20World");
+        URL url = new URL("https://encode.ravishdev.org/api/create/text_url?text_url=Hello%20World");
         InputStream in = url.openStream();
         FileOutputStream out = new FileOutputStream("qr.png");
         byte[] buf = new byte[4096];
@@ -108,7 +120,7 @@ import java.io.*;
 import java.net.*;
 public class QRPost {
     public static void main(String[] args) throws Exception {
-        URL url = new URL("https://encode-9qc6.onrender.com/api/create/wifi");
+        URL url = new URL("https://encode.ravishdev.org/api/create/wifi");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json");
@@ -135,7 +147,7 @@ public class QRPost {
 using System.Net.Http;
 using System.IO;
 var client = new HttpClient();
-var bytes = await client.GetByteArrayAsync("https://encode-9qc6.onrender.com/api/create/text_url?text_url=Hello%20World");
+var bytes = await client.GetByteArrayAsync("https://encode.ravishdev.org/api/create/text_url?text_url=Hello%20World");
 File.WriteAllBytes("qr.png", bytes);
 ```
 
@@ -147,7 +159,7 @@ using System.Text;
 using System.IO;
 var client = new HttpClient();
 var content = new StringContent("{\"type\":\"WPA\",\"ssid\":\"MyNetwork\",\"password\":\"mypassword\"}", Encoding.UTF8, "application/json");
-var bytes = await client.PostAsync("https://encode-9qc6.onrender.com/api/create/wifi", content).Result.Content.ReadAsByteArrayAsync();
+var bytes = await client.PostAsync("https://encode.ravishdev.org/api/create/wifi", content).Result.Content.ReadAsByteArrayAsync();
 File.WriteAllBytes("wifi-qr.png", bytes);
 ```
 
