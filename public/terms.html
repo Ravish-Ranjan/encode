@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms and Conditions - Encode</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        h1 { border-bottom: 2px solid #eaeaea; padding-bottom: 10px; color: #111; }
+        h2 { margin-top: 30px; color: #222; }
+        p, ul { color: #555; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        .footer { margin-top: 40px; text-align: center; font-size: 0.9em; color: #888; border-top: 1px solid #eaeaea; padding-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Terms and Conditions</h1>
+    <p><strong>Last Updated: June 24, 2026</strong></p>
+    <p>Welcome to the Encode. By accessing or using our API endpoints and services, you agree to comply with and be bound by the following terms and conditions.</p>
+
+    <h2>1. Acceptance of Terms</h2>
+    <p>By making requests to our API (including GET and POST endpoints), you signify your acceptance of these Terms and Conditions. If you do not agree to these terms, please stop using the service immediately.</p>
+
+    <h2>2. Description of Service</h2>
+    <p>The service provides automated generation of QR Codes mapping to user-submitted formats including, but not limited to: Plain Text, URLs, vCards, MeCards, WiFi configurations, Email protocols, SMS, Geo-locations, Calendar events, Bitcoin addresses, and UPI payment strings.</p>
+
+    <h2>3. Acceptable Use Policy</h2>
+    <p>You agree to use the API only for lawful purposes. You are strictly prohibited from utilizing this service to:</p>
+    <ul>
+        <li>Generate QR codes that link to phishing, malware, scams, or malicious websites.</li>
+        <li>Encode fraudulent financial data, deceptive UPI parameters, or unauthorized payment strings.</li>
+        <li>Bypass or attempt to exploit our rate-limiting systems or cache infrastructures.</li>
+        <li>Disrupt, spam, or overwhelm the hosting server infrastructure.</li>
+    </ul>
+
+    <h2>4. Rate Limiting and Caching</h2>
+    <p>To ensure fair availability, we implement automatic rate limiting (e.g., 100 requests per 15 minutes per IP address). Additionally, responses may be temporarily cached via Redis to optimize performance. Circumventing these limits via IP rotation or distributed script environments is a breach of these terms.</p>
+
+    <h2>5. Disclaimer of Warranties</h2>
+    <p>The service is provided on an "as is" and "as available" basis. We make no guarantees that the QR code output will always accurately match legacy scanner behaviors or that the service will be entirely uninterrupted or error-free.</p>
+
+    <h2>6. Limitation of Liability</h2>
+    <p>Under no circumstances shall the project maintainers or creators be held liable for direct, indirect, incidental, or consequential damages resulting from the use or inability to use the generated QR codes, including transaction errors arising from encoded UPI or Bitcoin addresses.</p>
+
+    <h2>7. Changes to Terms</h2>
+    <p>We reserve the right to modify these terms at any time. Your continued use of the API endpoints following adjustments implies acceptance of the new terms.</p>
+
+    <div class="footer">
+        <p>&copy; 2026 Encode. All rights reserved.</p>
+    </div>
+</div>
+
+</body>
+</html>

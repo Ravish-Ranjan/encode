@@ -4,6 +4,9 @@ import morgan from "morgan";
 import cors from "cors";
 import { config } from "dotenv";
 import { createClient } from "redis";
+import { rateLimit } from "express-rate-limit";
+import { RedisStore } from "rate-limit-redis";
+
 import paramRouter from "./routers/qrParam.router";
 import bodyRouter from "./routers/qrBody.router";
 import type { Server } from "http";
@@ -23,8 +26,17 @@ app.use(
 		credentials: true,
 	}),
 );
+
 app.use(express.json());
-app.use(morgan("dev"));
+
+morgan.token('clean-url', (req) => {
+  const url = req.originalUrl || req.url;
+  return url.split('?')[0]; 
+});
+
+const devWithoutQuery = ':method :clean-url :status :response-time ms - :res[content-length]';
+app.use(morgan(devWithoutQuery));
+
 app.use(
 	helmet({
 		hidePoweredBy: true,
@@ -49,13 +61,28 @@ app.use(
 	}),
 );
 
+const apiLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100, 
+	standardHeaders: true,
+	legacyHeaders: false,
+	message: {
+		msg: "Too many requests from this IP, please try again after 15 minutes."
+	},
+	store: process.env.REDIS_URL 
+		? new RedisStore({
+				sendCommand: (...args: string[]) => redisClient.sendCommand(args),
+		  })
+		: undefined, 
+});
+
 app.use(express.static(path.join(__dirname, "../public")));
 app.get("/", (req, res) => {
 	res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
-app.use("/api", paramRouter);
-app.use("/api", bodyRouter);
+app.use("/api", apiLimiter, paramRouter);
+app.use("/api", apiLimiter, bodyRouter);
 
 const port = process.env.PORT || 8001;
 let server: Server | undefined;

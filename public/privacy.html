@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Encode</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        h1 { border-bottom: 2px solid #eaeaea; padding-bottom: 10px; color: #111; }
+        h2 { margin-top: 30px; color: #222; }
+        p, ul { color: #555; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        .footer { margin-top: 40px; text-align: center; font-size: 0.9em; color: #888; border-top: 1px solid #eaeaea; padding-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Privacy Policy</h1>
+    <p><strong>Last Updated: June 24, 2026</strong></p>
+    <p>Your privacy is fundamentally important to us. This Privacy Policy details how the Encode handles, processes, and stores information when you interact with our endpoints.</p>
+
+    <h2>1. Information We Do Not Collect</h2>
+    <p>We do not require user accounts, registration, or sign-ups. We do not permanently store or persist the content, raw text, personal contacts, financial details, or credentials you submit to the API endpoints inside long-term relational databases.</p>
+
+    <h2>2. Data Processed On-The-Fly</h2>
+    <p>When you send a request to our generation endpoints, the service processes the fields provided in the query string or the JSON body (such as name, email, telephone, WiFi SSID, coordinates, or payment details) solely to transform that text into a visual PNG graphic layout.</p>
+
+    <h2>3. Caching and Memory Storage</h2>
+    <p>To improve speed and reduce computing overhead, identical combinations of data and color parameters are briefly hashed and cached within our system (via an in-memory Redis layer). These cached data objects are set to automatically expire and delete themselves (typically within 1 hour) and are not cross-referenced against your identity.</p>
+
+    <h2>4. Server Logs and Security</h2>
+    <p>For operations, diagnostics, and prevention of abuse, our servers process:</p>
+    <ul>
+        <li><strong>IP Addresses:</strong> Used strictly by our rate-limiting modules to track the volume of requests and block spam or Denial-of-Service (DoS) activities.</li>
+        <li><strong>Request Meta-Data:</strong> Minimal HTTP logging consisting of the request method, response times, status codes, and non-sensitive URL pathways.</li>
+    </ul>
+
+    <h2>5. Third-Party Sharing</h2>
+    <p>We do not sell, rent, or distribute any user-submitted data payloads or logged IP information to advertisers or marketing corporations.</p>
+
+    <h2>6. Security</h2>
+    <p>We incorporate security headers (including Helmet configurations) to mitigate XSS injections and intercept vulnerabilities, maintaining a secure runtime transmission lifecycle for your incoming requests.</p>
+
+    <h2>7. Contact Information</h2>
+    <p>If you have questions about the data processing pipeline or our privacy practices, you can submit an inquiry through our open-source project page repository.</p>
+
+    <div class="footer">
+        <p>&copy; 2026 Encode. All rights reserved.</p>
+    </div>
+</div>
+
+</body>
+</html>

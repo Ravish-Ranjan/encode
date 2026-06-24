@@ -13,7 +13,7 @@
 			href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap"
 			rel="stylesheet"
 		/>
-    <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
+		<link rel="shortcut icon" href="favicon.svg" type="image/x-icon" />
 		<script id="tailwind-config">
 			tailwind.config = {
 				darkMode: "class",
@@ -151,36 +151,46 @@
 			}
 			@layer utilities {
 				.nav-link {
-					@apply font-label text-body-md text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80;
+					@apply font-label text-code-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80;
 				}
 				.nav-link.active {
 					@apply text-primary dark:text-primary-fixed font-label pb-1;
 				}
 			}
-      /* Modern WebKit Browsers (Chrome, Safari, Edge) */
-      ::-webkit-scrollbar {
-        width: 4px;  /* For vertical scrollbars */
-        height: 4px; /* For horizontal scrollbars */
-      }
+			/* Modern WebKit Browsers (Chrome, Safari, Edge) */
+			::-webkit-scrollbar {
+				width: 4px; /* For vertical scrollbars */
+				height: 4px; /* For horizontal scrollbars */
+			}
 
-      ::-webkit-scrollbar-track {
-        background: transparent; /* Makes the track invisible */
-      }
+			::-webkit-scrollbar-track {
+				background: transparent; /* Makes the track invisible */
+			}
 
-      ::-webkit-scrollbar-thumb {
-        background-color: rgba(156, 163, 175, 0.5); /* Subtle gray color with transparency */
-        border-radius: 9999px; /* Fully rounded/pill shape line */
-      }
+			::-webkit-scrollbar-thumb {
+				background-color: rgba(
+					156,
+					163,
+					175,
+					0.5
+				); /* Subtle gray color with transparency */
+				border-radius: 9999px; /* Fully rounded/pill shape line */
+			}
 
-      ::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(156, 163, 175, 0.8); /* Darkens slightly on hover */
-      }
+			::-webkit-scrollbar-thumb:hover {
+				background-color: rgba(
+					156,
+					163,
+					175,
+					0.8
+				); /* Darkens slightly on hover */
+			}
 
-      /* Firefox Support */
-      * {
-        scrollbar-width: thin;
-        scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
-      }
+			/* Firefox Support */
+			* {
+				scrollbar-width: thin;
+				scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+			}
 		</style>
 	</head>
 	<body
@@ -195,7 +205,9 @@
 				>
 					Encode
 				</div>
-				<nav class="hidden md:flex space-x-md text-sm items-center font-label">
+				<nav
+					class="hidden md:flex space-x-md text-sm items-center font-label"
+				>
 					<a class="nav-link" href="#live-demo">Live Demo</a>
 					<a class="nav-link" href="#supported-formats"
 						>Supported Formats</a
@@ -225,7 +237,7 @@
 					</p>
 					<div class="flex space-x-sm pt-sm">
 						<a
-              href="#live-demo"
+							href="#live-demo"
 							class="bg-primary text-on-primary px-md py-sm rounded-DEFAULT font-label-caps text-label-caps flex items-center gap-xs hover:opacity-90 transition-opacity"
 						>
 							<span>Get Started</span>
@@ -235,15 +247,30 @@
 							/>
 						</a>
 						<a
-              href="https://github.com/Ravish-Ranjan"
-              target="_blank"
+							href="https://github.com/Ravish-Ranjan"
+							target="_blank"
 							class="border border-secondary text-secondary px-md py-sm rounded-DEFAULT font-label-caps text-label-caps hover:bg-surface-container transition-colors"
 						>
 							View on GitHub
-            </a>
+						</a>
+					</div>
+					<div class="flex gap-2">
+						<a
+							href="terms.html"
+							class="text-secondary underline p-2 rounded-DEFAULT font-label-caps text-label-caps flex items-center gap-xs hover:opacity-90 transition-opacity"
+						>
+							<span>Terms and Conditions</span>
+						</a>
+						<a
+							href="privacy.html"
+							target="_blank"
+							class="text-secondary underline p-2 rounded-DEFAULT font-label-caps text-label-caps transition-colors"
+						>
+							Privacy Policy
+						</a>
 					</div>
 				</div>
-        <img src="illus.webp" alt="">
+				<img src="illus.webp" alt="" />
 			</section>
 			<section id="live-demo" class="bg-surface-container-low py-xl">
 				<div class="max-w-container-max mx-auto px-lg space-y-lg">
@@ -378,15 +405,27 @@
 									</div>
 								</div>
 							</div>
-              <div class="w-full">
-                <span class="block font-label-caps text-label-caps text-on-surface-variant">QR-Code URL</span>
-                <div class="flex gap-2 justify-between items-center">
-                  <span id="live-demo-url" class="w-11/12 bg-surface-container p-2 overflow-x-auto text-on-surface font-code-sm text-code-sm"></span>
-                  <button id="copy-url">
-                    <img src="https://api.iconify.design/lucide:copy.svg?color=%23b5b4e0" class="size-5" alt="">
-                  </button>
-              </div>
-              </div>
+							<div class="w-full">
+								<span
+									class="block font-label-caps text-label-caps text-on-surface-variant"
+									>QR-Code URL</span
+								>
+								<div
+									class="flex gap-2 justify-between items-center"
+								>
+									<span
+										id="live-demo-url"
+										class="w-11/12 bg-surface-container p-2 overflow-x-auto text-on-surface font-code-sm text-code-sm"
+									></span>
+									<button id="copy-url">
+										<img
+											src="https://api.iconify.design/lucide:copy.svg?color=%23b5b4e0"
+											class="size-5"
+											alt=""
+										/>
+									</button>
+								</div>
+							</div>
 						</div>
 						<div
 							class="lg:col-span-5 flex flex-col items-center justify-center bg-surface-container-low rounded-lg p-md"
@@ -481,7 +520,7 @@
 							>Crypto Wallet</span
 						>
 					</div>
-          <div
+					<div
 						class="shadow-white/20 shadow-sm bg-white/5 rounded-2xl p-md flex flex-col items-center text-center gap-sm transition-colors cursor-pointer"
 					>
 						<img
@@ -507,7 +546,7 @@
 							>SMS / Text</span
 						>
 					</div>
-          <div
+					<div
 						class="shadow-white/20 shadow-sm bg-white/5 rounded-2xl p-md flex flex-col items-center text-center gap-sm transition-colors cursor-pointer"
 					>
 						<img
@@ -694,32 +733,34 @@
 				</div>
 				<div class="flex flex-col space-y-sm">
 					<a
+						href="privacy.html"
 						class="font-body-md text-body-md text-on-surface-variant dark:text-primary-variant hover:text-primary dark:hover:text-primary-fixed underline decoration-2 underline-offset-4 transition-all duration-200 cursor-pointer"
 						>Privacy Policy</a
 					>
 				</div>
 				<div class="flex flex-col space-y-sm">
 					<a
+						href="terms.html"
 						class="font-body-md text-body-md text-on-surface-variant dark:text-primary-variant hover:text-primary dark:hover:text-primary-fixed underline decoration-2 underline-offset-4 transition-all duration-200 cursor-pointer"
 						>Terms of Service</a
 					>
 					<a
-            href="mailto:contact@ravishdev.org"
-            target="_blank"
+						href="mailto:contact@ravishdev.org"
+						target="_blank"
 						class="font-body-md text-body-md text-on-surface-variant dark:text-primary-variant hover:text-primary dark:hover:text-primary-fixed underline decoration-2 underline-offset-4 transition-all duration-200 cursor-pointer"
 						>Support</a
 					>
 				</div>
 				<div class="flex flex-col space-y-sm">
 					<a
-            href="https://github.com/Ravish-Ranjan"
-            target="_blank"
+						href="https://github.com/Ravish-Ranjan"
+						target="_blank"
 						class="font-body-md text-body-md text-on-surface-variant dark:text-primary-variant hover:text-primary dark:hover:text-primary-fixed underline decoration-2 underline-offset-4 transition-all duration-200 cursor-pointer"
 						>Github</a
 					>
 					<a
-            href="https://www.linkedin.com/in/ravish-ranjan-dev/"
-            target="_blank"
+						href="https://www.linkedin.com/in/ravish-ranjan-dev/"
+						target="_blank"
 						class="font-body-md text-body-md text-on-surface-variant dark:text-primary-variant hover:text-primary dark:hover:text-primary-fixed underline decoration-2 underline-offset-4 transition-all duration-200 cursor-pointer"
 						>LinkedIn</a
 					>
