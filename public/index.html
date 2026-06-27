@@ -196,12 +196,12 @@
 	<body
 		class="bg-surface text-on-surface font-body-md text-body-md min-h-screen flex flex-col"
 	>
-		<header class="w-full top-4 fixed z-50">
+		<header class="w-full top-4 absolute md:fixed z-50">
 			<div
-				class="md:max-w-3xl bg-slate/50 shadow-sm shadow-white/20 backdrop-blur-md flex justify-between gap-4 px-8 py-4 rounded-[100vw] items-center outline-1 max-w-container mx-auto"
+				class="w-11/12 md:max-w-3xl bg-slate/50 md:shadow-sm md:shadow-white/20 backdrop-blur-md flex justify-between gap-4 p-4 md:px-8 md:py-4 rounded-[100vw] items-center outline-1 max-w-container mx-auto"
 			>
 				<div
-					class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed"
+					class="font-headline-md text-headline-lg border-b md:border-none border-primary md:text-headline-md font-bold text-primary dark:text-primary-fixed"
 				>
 					Encode
 				</div>
@@ -218,7 +218,7 @@
 				</nav>
 			</div>
 		</header>
-		<main class="flex-grow">
+		<main class="flex-grow mt-32 md:mt-10">
 			<section
 				class="max-w-container-max h-screen mx-auto px-lg py-xl flex flex-col lg:flex-row items-center gap-xl"
 			>
@@ -229,7 +229,7 @@
 						Generate Any QR Code with One Simple API.
 					</h1>
 					<p
-						class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl"
+						class="font-body-lg text-body-md md:text-body-lg text-on-surface-variant max-w-2xl"
 					>
 						A fast, reliable, and completely free QR code generator
 						for developers. Support for vCard, WiFi, Crypto, and
@@ -238,7 +238,7 @@
 					<div class="flex space-x-sm pt-sm">
 						<a
 							href="#live-demo"
-							class="bg-primary text-on-primary px-md py-sm rounded-DEFAULT font-label-caps text-label-caps flex items-center gap-xs hover:opacity-90 transition-opacity"
+							class="bg-primary text-on-primary px-4 py-2 md:px-md md:py-sm rounded-DEFAULT font-label-caps text-label-caps flex items-center gap-xs hover:opacity-90 transition-opacity"
 						>
 							<span>Get Started</span>
 							<img
@@ -249,7 +249,7 @@
 						<a
 							href="https://github.com/Ravish-Ranjan"
 							target="_blank"
-							class="border border-secondary text-secondary px-md py-sm rounded-DEFAULT font-label-caps text-label-caps hover:bg-surface-container transition-colors"
+							class="border border-secondary text-secondary px-4 py-2 md:px-md md:py-sm rounded-DEFAULT font-label-caps text-label-caps hover:bg-surface-container transition-colors"
 						>
 							View on GitHub
 						</a>
@@ -272,8 +272,13 @@
 				</div>
 				<img src="illus.webp" alt="" />
 			</section>
-			<section id="live-demo" class="bg-surface-container-low py-xl">
-				<div class="max-w-container-max mx-auto px-lg space-y-lg">
+			<section
+				id="live-demo"
+				class="bg-surface-container-low py-xl w-full"
+			>
+				<div
+					class="w-11/12 md:max-w-container-max mx-auto md:px-lg space-y-lg"
+				>
 					<div class="text-center space-y-sm">
 						<h2
 							class="font-headline-md text-headline-md text-on-surface"
@@ -288,7 +293,7 @@
 						</p>
 					</div>
 					<div
-						class="grid grid-cols-1 lg:grid-cols-12 gap-lg bg-surface rounded-xl p-md md:p-lg"
+						class="grid w-full grid-cols-1 lg:grid-cols-12 gap-lg bg-surface rounded-xl p-md md:p-lg"
 					>
 						<div class="lg:col-span-7 space-y-md">
 							<div
@@ -605,7 +610,7 @@
 				id="api-integration"
 			>
 				<div
-					class="max-w-container-max mx-auto px-lg grid grid-cols-1 lg:grid-cols-2 gap-xl items-start"
+					class="max-w-container-max mx-auto px-md md:px-lg grid grid-cols-1 lg:grid-cols-2 gap-xl items-start"
 				>
 					<div class="space-y-md">
 						<h2
@@ -706,8 +711,17 @@
 								</button>
 							</div>
 							<pre
-								class="p-sm overflow-x-auto text-on-surface font-code-sm text-code-sm leading-relaxed"
-							><code id="integration-code" class="h-40 grid overflow-h-auto"></code></pre>
+								class="p-sm relative overflow-x-auto text-on-surface font-code-sm text-code-sm leading-relaxed"
+							>
+								<code id="integration-code" class="h-40 grid overflow-h-auto"></code>
+								<button id="copy-integration" class="absolute bottom-4 right-4 grid place-items-center">
+										<img
+											src="https://api.iconify.design/lucide:copy.svg?color=%23b5b4e0"
+											class="size-5"
+											alt="copy"
+										/>
+								</button>
+							</pre>
 						</div>
 					</div>
 				</div>
@@ -768,6 +782,20 @@
 			</div>
 		</footer>
 
+		<script>
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', () => {
+					navigator.serviceWorker.register('/sw.js')
+						.then((registration) => {
+							console.log('Service Worker registered successfully with scope:', registration.scope);
+						})
+						.catch((error) => {
+							console.error('Service Worker registration failed:', error);
+						});
+				});
+			}
+		</script>
 		<script src="script.js"></script>
+
 	</body>
 </html>

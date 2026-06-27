@@ -432,6 +432,7 @@ document.getElementById("type-tabs").addEventListener("click", (e) => {
 
 const codeBlock = document.getElementById("integration-code");
 
+let codeContent = 'curl "https://encode.ravishdev.org/api/create/text_url?text_url=Hello%20World';
 document.getElementById("integration-tabs").addEventListener("click", (e) => {
 	const button = e.target.closest("button");
 	if (button && button.dataset.lang) {
@@ -453,6 +454,7 @@ document.getElementById("integration-tabs").addEventListener("click", (e) => {
 
 		if (integrationSnippets[lang]) {
 			codeBlock.textContent = integrationSnippets[lang];
+			codeContent = integrationSnippets[lang];
 		}
 	}
 });
@@ -463,6 +465,15 @@ document.getElementById("copy-url").addEventListener("click",async function(e) {
         window.alert('URL copied to clipboard!');
     } catch (err) {
         console.error('Failed to copy text: ', err);
+    }
+});
+
+document.getElementById("copy-integration").addEventListener("click",async function(e) {
+    try {
+        await navigator.clipboard.writeText(codeContent);
+        window.alert('Code copied to clipboard!');
+    } catch (err) {
+        console.error('Failed to copy code: ', err);
     }
 });
 
