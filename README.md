@@ -23,7 +23,7 @@ A flexible backend API for generating QR codes in various formats, including tex
 - Bitcoin
 - UPI
 
-See [formatsExample.md](formatsExample.md) for detailed format examples.
+See [FORMATS.md](FORMATS.md) for detailed format examples.
 
 ## API Endpoints
 
@@ -53,7 +53,7 @@ Add `fg` and `bg` parameters (hex color codes) to customize QR code colors.
     GET /api/create/text_url?text_url=Hello&fg=%23000000&bg=%23ffffff
 
 ## Examples
-See [examples](examples.md)
+See [examples](EXAMPLES.md)
 
 ## Getting Started
 

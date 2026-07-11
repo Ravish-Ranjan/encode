@@ -169,6 +169,6 @@ File.WriteAllBytes("wifi-qr.png", bytes);
 
 - Replace `localhost:8000` with your server's address if deployed elsewhere.
 - The API returns PNG images by default.
-- For more format examples, see `formatsExample.md`.
+- For more format examples, see `FORMATS.md`.
 
 ---
