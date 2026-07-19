@@ -32,7 +32,9 @@ See [FORMATS.md](FORMATS.md) for detailed format examples.
 Generate a QR code using query parameters.
 
 **Example:**
-> 
+
+>
+
     GET /api/create/vcard?firstName=John&lastName=Doe&email=john@example.com
 
 ### POST /api/create/:type
@@ -40,7 +42,9 @@ Generate a QR code using query parameters.
 Generate a QR code using a JSON body.
 
 **Example:**
+
 >
+
     POST /api/create/wifi Content-Type: application/json
     { "type": "WPA", "ssid": "MyNetwork", "password": "mypassword" }
 
@@ -49,10 +53,13 @@ Generate a QR code using a JSON body.
 Add `fg` and `bg` parameters (hex color codes) to customize QR code colors.
 
 **Example:**
+
 >
+
     GET /api/create/text_url?text_url=Hello&fg=%23000000&bg=%23ffffff
 
 ## Examples
+
 See [examples](EXAMPLES.md)
 
 ## Getting Started
@@ -63,6 +70,8 @@ See [examples](EXAMPLES.md)
 - npm
 
 ### Installation
+
+for docker setup go to [feature/docker](https://github.com/Ravish-Ranjan/encode/tree/feature/docker) branch
 
 ```bash
 # Dependency Installation
@@ -79,11 +88,14 @@ npm start
 ```
 
 ### Configuration
+
 Environment variables can be set in a .env file:
+
 >
+
     PORT=<PORT>
     REDIS_URL=redis://localhost:6379
 
-
 ### Author:
+
 [Ravish Ranjan](https://github.com/Ravish-Ranjan)
