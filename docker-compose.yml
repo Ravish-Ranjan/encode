@@ -1,0 +1,16 @@
+services:
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: runner
+
+        container_name: encode
+
+        ports:
+            - "8003:8003"
+
+        environment:
+            NODE_ENV: "production"
+
+        restart: unless-stopped

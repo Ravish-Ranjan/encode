@@ -29,12 +29,13 @@ app.use(
 
 app.use(express.json());
 
-morgan.token('clean-url', (req) => {
-  const url = req.originalUrl || req.url;
-  return url.split('?')[0]; 
+morgan.token("clean-url", (req) => {
+	const url = req.originalUrl || req.url;
+	return url.split("?")[0];
 });
 
-const devWithoutQuery = ':method :clean-url :status :response-time ms - :res[content-length]';
+const devWithoutQuery =
+	":method :clean-url :status :response-time ms - :res[content-length]";
 app.use(morgan(devWithoutQuery));
 
 app.use(
@@ -63,17 +64,18 @@ app.use(
 
 const apiLimiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 100, 
+	max: 100,
 	standardHeaders: true,
 	legacyHeaders: false,
 	message: {
-		msg: "Too many requests from this IP, please try again after 15 minutes."
+		msg: "Too many requests from this IP, please try again after 15 minutes.",
 	},
-	store: process.env.REDIS_URL 
+	store: process.env.REDIS_URL
 		? new RedisStore({
-				sendCommand: (...args: string[]) => redisClient.sendCommand(args),
-		  })
-		: undefined, 
+				sendCommand: (...args: string[]) =>
+					redisClient.sendCommand(args),
+			})
+		: undefined,
 });
 
 app.use(express.static(path.join(__dirname, "../public")));
@@ -106,6 +108,10 @@ if (process.env.REDIS_URL) {
 		console.log(`SERVER : running on port ${port} without redis cache`);
 	});
 }
+
+app.get("/health", (_, res) => {
+	return res.status(200).json({ status: "secure and healty" });
+});
 
 process.on("SIGTERM", () => {
 	console.log("SERVER : SIGTERM recieved, closing server");
