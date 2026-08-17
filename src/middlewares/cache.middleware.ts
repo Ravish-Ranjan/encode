@@ -1,50 +1,45 @@
 import type { NextFunction, Response } from "express";
 import type { QrRequest } from "../types";
-import { redisClient } from "../index";
+import { redisClient, redisEnabled } from "../configs/redis";
+import { generateQrImage } from "../services/qrcode.service";
 
 export async function cache(req: QrRequest, res: Response, next: NextFunction) {
 	if (!req.qrData) return next();
 
 	const { type, data, colours } = req.qrData;
-	const cacheKey = `qr:${type}:${JSON.stringify(data)}:${JSON.stringify(
-		colours || {}
-	)}`;
+
+	const cacheKey = `qr:${type}:${JSON.stringify(data)}:${JSON.stringify(colours || {})}`;
 
 	try {
-		const cachedImage = await redisClient.get(cacheKey);
-		if (cachedImage) {
+		if (redisEnabled) {
+			const cachedImage = await redisClient.get(cacheKey);
 
-			const buffer = Buffer.from(cachedImage, "base64");
-			res.setHeader("Content-Type", "image/png");
-			res.setHeader("Content-Length", buffer.length);
-			return res.end(buffer);
+			if (cachedImage) {
+				req.qrImage = Buffer.from(cachedImage, "base64");
+				return next();
+			}
 		}
 
-		const originalEnd = res.end.bind(res);
-		const originalWrite = res.write.bind(res);
-		const chunks: Buffer[] = [];
+		const image = await generateQrImage(req.qrData);
 
-		res.write = ((chunk: any, ...args: any[]) => {
-			if (Buffer.isBuffer(chunk)) chunks.push(chunk);
-			return originalWrite(chunk, ...args);
-		}) as any;
+		req.qrImage = image;
 
-		res.end = (async (chunk?: any, ...args: any[]) => {
-			if (Buffer.isBuffer(chunk)) chunks.push(chunk);
-			const buffer = Buffer.concat(chunks);
-			if (
-				res.getHeader("Content-Type")?.toString().includes("image/png")
-			) {
-				await redisClient.set(cacheKey, buffer.toString("base64"), {
-					EX: 3600,
-				});
-			}
-			return originalEnd(chunk, ...args);
-		}) as any;
+		if (redisEnabled) {
+			await redisClient.set(cacheKey, image.toString("base64"), {
+				EX: 3600,
+			});
+		}
 
-		next();
-	} catch (err) {
-		console.error("Redis cache middleware error:", err);
-		next();
+		return next();
+	} catch (error) {
+		console.error("Redis cache middleware error:", error);
+
+		try {
+			req.qrImage = await generateQrImage(req.qrData);
+
+			return next();
+		} catch (generationError) {
+			return next(generationError);
+		}
 	}
 }

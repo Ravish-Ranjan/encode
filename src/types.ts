@@ -117,4 +117,11 @@ export type QrData = {
 
 export interface QrRequest extends Request {
 	qrData?: QrData;
+	qrImage?: Buffer;
 }
+
+export type NotFoundError = {
+	message: string;
+	requiredFields: string[];
+	optionalFields?: string[];
+};
