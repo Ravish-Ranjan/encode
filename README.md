@@ -6,6 +6,7 @@ A flexible backend API for generating QR codes in various formats, including tex
 
 - Generate QR codes for multiple data types
 - Supports both GET (query params) and POST (JSON body) requests
+- Supports versioned APIs (`/api` and `/api/v2`)
 - Customizable foreground and background colors
 - Built with Express, TypeScript, and QRCode
 
@@ -27,7 +28,31 @@ See [FORMATS.md](FORMATS.md) for detailed format examples.
 
 ## API Endpoints
 
-### GET /api/create/:type
+### API Versions
+
+#### v1 (existing)
+
+Base path: `/api`
+
+- `GET /api/create/:type`
+- `POST /api/create/:type`
+- `GET /api/create` (legacy text/url-compatible route)
+- `POST /api/create` (legacy text/url-compatible route)
+
+#### v2 (new)
+
+Base path: `/api/v2`
+
+- `GET /api/v2/:type`
+- `POST /api/v2/:type`
+
+#### What changed in v2
+
+- The `/create` segment was removed from endpoint paths.
+- The QR type is provided directly in the versioned route path (`/api/v2/:type`).
+- v1 routes are still available for backward compatibility.
+
+### GET /api/v2/:type
 
 Generate a QR code using query parameters.
 
@@ -35,9 +60,9 @@ Generate a QR code using query parameters.
 
 >
 
-    GET /api/create/vcard?firstName=John&lastName=Doe&email=john@example.com
+    GET /api/v2/vcard?firstName=John&lastName=Doe&email=john@example.com
 
-### POST /api/create/:type
+### POST /api/v2/:type
 
 Generate a QR code using a JSON body.
 
@@ -45,7 +70,7 @@ Generate a QR code using a JSON body.
 
 >
 
-    POST /api/create/wifi Content-Type: application/json
+    POST /api/v2/wifi Content-Type: application/json
     { "type": "WPA", "ssid": "MyNetwork", "password": "mypassword" }
 
 ### Color Customization
@@ -56,7 +81,7 @@ Add `fg` and `bg` parameters (hex color codes) to customize QR code colors.
 
 >
 
-    GET /api/create/text_url?text_url=Hello&fg=%23000000&bg=%23ffffff
+    GET /api/v2/text_url?text_url=Hello&fg=%23000000&bg=%23ffffff
 
 ## Examples
 
