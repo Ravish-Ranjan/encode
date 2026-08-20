@@ -7,7 +7,7 @@ const PORT = Number(env.port) || 8001;
 async function bootstrap() {
 	try {
 		await connectRedis();
-		
+
 		const app = createApp();
 
 		const server = app.listen(PORT, () => {

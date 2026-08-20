@@ -11,6 +11,14 @@ import { redisClient, redisEnabled } from "./configs/redis";
 import RedisStore from "rate-limit-redis";
 
 function createApiLimiter() {
+	const redisStore =
+		redisEnabled && redisClient.isOpen
+			? new RedisStore({
+					sendCommand: (...args: string[]) =>
+						redisClient.sendCommand(args),
+				})
+			: undefined;
+
 	return rateLimit({
 		windowMs: 15 * 60 * 1000,
 		max: 100,
@@ -21,14 +29,7 @@ function createApiLimiter() {
 			msg: "Too many requests from this IP, please try again after 15 minutes.",
 		},
 
-		...(redisEnabled
-			? {
-					store: new RedisStore({
-						sendCommand: (...args: string[]) =>
-							redisClient.sendCommand(args),
-					}),
-				}
-			: {}),
+		...(redisStore ? { store: redisStore } : {}),
 	});
 }
 
